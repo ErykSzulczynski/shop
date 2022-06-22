@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
+        <a class="navbar-brand" href="/">eShop</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <!--<a class="nav-link" href="/dashboard">Panel Administracyjny</a>-->
+                </li>
+            </ul>
+        </div>
+        <div>
+            <div class="dropdown">
+                <a class="btn btn-primary" href="/cart">Koszyk</a>
+                <a href="/logout" class="btn btn-primary">Wyloguj</a>
+                <a href="/login" class="btn btn-primary">Zaloguj</a>
+                <a href="/register" class="btn btn-primary">Rejestracja</a>
+            </div>
+        </div>
+    </nav>
+    <a type="button" class="btn btn-primary my-3 mx-3" href="/">Powrót</a>
+    <div class="w-50" style="margin: 0 auto">
+        <h2>Twój koszyk</h2>
+        <hr/>
+        <ul class="list-group mb-3">
+            {{#each productData}}
+            <li class="list-group-item d-flex w-100 justify-content-between">
+                <div>{{this.name}}</div>
+                <div>
+                    {{this.price}} <b>PLN</b>
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+        <button class="btn btn-primary" onclick="createOrder()">Utwórz zlecenie</button>
+    </div>
+</body>
+<script>
+
+
+    async function createOrder() {
+        let products = {{{ json productData }}};
+        
+    if (products == 0) {
+        alert("No products in cart")
+    } else {
+        let productIds = products.map(item => item.id_p);
+        const rawResponse = await fetch('http://localhost:3000/postOrder', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(productIds)
+        })
+        const content = await rawResponse.json().then(alert("Order Posted")).then(document.location.href="/")
+    }
+    }
+</script>
+
+</html>

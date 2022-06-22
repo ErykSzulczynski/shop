@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
+        <a class="navbar-brand" href="/">eShop</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <!--<a class="nav-link" href="/dashboard">Panel Administracyjny</a>-->
+                </li>
+            </ul>
+        </div>
+        <div>
+            <div class="dropdown">
+                <a class="btn btn-primary" href="/cart">Koszyk</a>
+                <a href="/logout" class="btn btn-primary">Wyloguj</a>
+            </div>
+        </div>
+    </nav>
+    <div class="w-100 container-fluid d-flex" style="padding: 0">
+        <div>
+            <nav class="w-100 bg-light sidebar" style="min-height: 92vh">
+                <div class="sidebar-sticky">
+                  <ul class="nav flex-column">
+                    <li class="nav-item">
+                      <a class="nav-link" href="/dashboard/orders">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+                        Orders
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/dashboard/products">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                        Products
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/dashboard/users">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        Users
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </nav>
+        </div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Dodaj produkt</button>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Created Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each userData}}
+                        <tr>
+                            <th scope="row">{{this.id_u}}</th>
+                            <td>{{this.username}}</td>
+                            <td>{{this.email}}</td>
+                            <td>{{this.role}}</td>
+                            <td>{{this.created_date}}</td>
+                            <td><button id="{{this.id_u}}" type="button" class="btn btn-primary" onclick="deleteItem(this.id)">Usuń</button></td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Utwórz Uzytkownika</h5>
+        </div>
+        <div class="modal-body">
+            <form class="form-signin" action="/users" method="POST">
+                <label for="username" class="sr-only">Username</label>
+                <input type="username" name="username" id="inputUsername" class="form-control" placeholder="Username" required="true"
+                    autofocus="">
+                <label for="role">Rola</label>
+                <select name="role" class="form-control" id="roleSelect">
+                    <option value="admin">Admin</option>
+                    <option value="moderator">Moderator</option>
+                    <option value="user">Uzytkownik</option>
+                </select>
+                <label for="email" class="sr-only">Email</label>
+                <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email" required="true">
+                <label for="password" class="sr-only">Password</label>
+                <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required="true">
+                <div class="mt-3">
+                    <button class="btn btn-primary btn-block" type="submit">Register</button>
+                </div>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+    </div>
+</body>
+<script>
+    async function deleteItemCall (id) {
+        const rawResponse = await fetch('http://localhost:3000/users/' + id, {
+            method: 'DELETE'
+        })
+        const content = await rawResponse.json().then(res => {alert("User deleted")}).then(window.location.reload(true))
+    }
+
+    function deleteItem (id) {
+        let text = "Jesteś pewien, ze chcesz usunąć tego uzytkownika?";
+        if (confirm(text) == true) {
+            deleteItemCall(id)
+        } else {
+            return
+        }
+    }
+</script>
+</html>

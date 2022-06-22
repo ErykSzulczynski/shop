@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
+        <a class="navbar-brand" href="/">eShop</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <!--<a class="nav-link" href="/dashboard">Panel Administracyjny</a>-->
+                </li>
+            </ul>
+        </div>
+        <div>
+            <div class="dropdown">
+                {{#if authStatus}}
+                    <a class="btn btn-primary" href="/cart">Koszyk</a>
+                    <a href="/logout" class="btn btn-primary">Wyloguj</a>
+                {{else}}
+                    <a href="/login" class="btn btn-primary">Zaloguj</a>
+                    <a href="/register" class="btn btn-primary">Rejestracja</a>
+                {{/if}}
+            </div>
+        </div>
+    </nav>
+    <a type="button" class="btn btn-primary my-3 mx-3" href="/">Powrót</a>
+    <div class="w-75 d-flex justify-content-center" style="margin: 0 auto;">
+        <div style="width: 25vw;">
+            <img src="{{productData.image_url}}" style="width=400px;" class="img-fluid" alt="Responsive image">
+        </div>
+        <div style="width: 50vw; text-align: right;">
+            <h2>
+                {{productData.name}}
+            </h2>
+            <p>
+                {{productData.description}}
+            </p>
+            <h3>{{productData.price}} PLN</h3>
+            {{#if authStatus}}
+            <button id="{{productData.id_p}}" type="button" class="btn btn-primary" onclick="addToCart(this.id)">Dodaj
+                do koszyka</button>
+            {{/if}}
+        </div>
+    </div>
+</body>
+<script>
+    async function addToCart(id) {
+        const rawResponse = await fetch('http://localhost:3000/createOrder', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: id })
+        })
+        const content = await rawResponse.json().then(res => {alert("Product added to cart")})
+    }
+</script>
+
+</html>
